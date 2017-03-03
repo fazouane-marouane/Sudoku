@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es5",
+        "moduleResolution": "node",
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "sourceMap": true,
+        "watch": false,
+        "outDir": "dist",
+        "lib": [
+            "es2015",
+            "es2015.generator"
+        ]
+    },
+    "files": [
+        "index.ts",
+        "lib/SudokuSolver.ts",
+        "lib/SudokuFormatter.ts"
+    ]
+}

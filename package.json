@@ -1,0 +1,11 @@
+{
+  "name": "Sudoku.js",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@types/node": "^7.0.5",
+    "logic-solver": "^2.0.1",
+    "typescript": "^2.2.1"
+  }
+}

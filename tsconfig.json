@@ -6,6 +6,7 @@
         "noImplicitAny": true,
         "strictNullChecks": true,
         "sourceMap": true,
+        "declaration": true,
         "watch": false,
         "outDir": "dist",
         "lib": [

@@ -1,22 +1,15 @@
-declare global {
-    interface Array<T> {
-        chunk(chunkSize: number): Array<Array<T>>;
-    }
+function chunk<T>(array: Array<T>, chunkSize: number): Array<Array<T>> {
+        let result = [];
+        for (let i = 0; i < array.length; i += chunkSize) {
+            result.push(array.slice(i, i + chunkSize))
+        }
+        return result
 }
 
-Object.defineProperty(Array.prototype, 'chunk', {
-    value: function (chunkSize: number) {
-        var R = [];
-        for (var i = 0; i < this.length; i += chunkSize)
-            R.push(this.slice(i, i + chunkSize));
-        return R;
-    }
-});
-
 export function formatSudoku(sudoku: number[][]): string {
-    let output = sudoku.chunk(3).map(lines =>
+    let output = chunk(sudoku, 3).map(lines =>
         lines.map(line =>
-            line.chunk(3).map(columns =>
+            chunk(line, 3).map(columns =>
                 columns.join(' '))
                 .join(' | '))
             .join('\n'))
@@ -29,7 +22,7 @@ export function parseSudoku(text: string) {
 }
 
 export function parseAllSudokus(text: string) {
-    return text.split('\n').chunk(10).map(lines =>{
+    return chunk(text.split('\n'), 10).map(lines =>{
         return parseSudoku(lines.slice(1).join('\n'));
     })
 }

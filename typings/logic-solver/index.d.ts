@@ -18,5 +18,6 @@ declare module 'logic-solver' {
 
     export function exactlyOne(...args: Formulas[]): Formula
     export function and(...args: any[]): Formula
+    export function disablingAssertions<T>(f: (... args: any[]) => T): T
     export var Solver: SolverInstance
 }

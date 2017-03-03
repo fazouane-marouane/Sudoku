@@ -14,7 +14,7 @@ function elapsed_time(note: string){
 const fileContent = fs.readFileSync('sudoku.txt', 'utf-8')
 const sudokus = parseAllSudokus(fileContent)
 elapsed_time("read")
-const solutions = sudokus.map(solveSudoku)
+const solutions = Object.values(sudokus).map(solveSudoku)
 const nums = solutions.map(solution => solution[0].slice(0, 3).reduce((pre, curr) => pre*10+curr, 0))
 const sum = nums.reduce((acc, curr) => acc + curr, 0)
 

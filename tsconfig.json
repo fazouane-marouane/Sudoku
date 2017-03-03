@@ -10,7 +10,8 @@
         "watch": false,
         "outDir": "dist",
         "lib": [
-            "es2015"
+            "es2015",
+            "es2017.object"
         ],
         "typeRoots": [
             "node_modules/@types",

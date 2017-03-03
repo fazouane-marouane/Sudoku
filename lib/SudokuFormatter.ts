@@ -13,16 +13,16 @@ export function formatSudoku(sudoku: number[][]): string {
                 columns.join(' '))
                 .join(' | '))
             .join('\n'))
-        .join('\n------+-------+------\n');
-    return output;
+        .join('\n------+-------+------\n')
+    return output
 }
 
-export function parseSudoku(text: string) {
-    return text.split('\n').map(line => line.split('').map(v => parseInt(v)));
+export function parseSudoku(text: string): number[][] {
+    return text.split('\n').map(line => line.split('').map(v => parseInt(v)))
 }
 
-export function parseAllSudokus(text: string) {
-    return chunk(text.split('\n'), 10).map(lines =>{
-        return parseSudoku(lines.slice(1).join('\n'));
-    })
+export function parseAllSudokus(text: string): {[name: string]: number[][]} {
+    return Object.assign({}, ...chunk(text.split('\n'), 10).map(lines => ({
+        [lines[0]]: parseSudoku(lines.slice(1).join('\n'))
+    })))
 }

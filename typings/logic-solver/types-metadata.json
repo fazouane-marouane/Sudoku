@@ -1,0 +1,20 @@
+{
+    "name": "logic-solver",
+    "libraryName": "logic-solver",
+    "data": {
+        "pathMappings": {},
+        "typeScriptVersion": "2.0",
+        "libraryName": "logic-solver",
+        "typingsPackageName": "logic-solver",
+        "globals": [
+        ],
+        "declaredModules": [
+            "logic-solver"
+        ],
+        "files": [
+            "index.d.ts"
+        ],
+        "hasPackageJson": false
+    },
+    "isLatest": true
+}

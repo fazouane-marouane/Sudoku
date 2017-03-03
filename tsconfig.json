@@ -9,13 +9,14 @@
         "watch": false,
         "outDir": "dist",
         "lib": [
-            "es2015",
-            "es2015.generator"
+            "es2015"
+        ],
+        "typeRoots": [
+            "node_modules/@types",
+            "typings"
         ]
     },
     "files": [
-        "index.ts",
-        "lib/SudokuSolver.ts",
-        "lib/SudokuFormatter.ts"
+        "index.ts"
     ]
 }

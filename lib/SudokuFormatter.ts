@@ -13,7 +13,7 @@ Object.defineProperty(Array.prototype, 'chunk', {
     }
 });
 
-export function formatSudoku(sudoku: any[][]): string {
+export function formatSudoku(sudoku: number[][]): string {
     let output = sudoku.chunk(3).map(lines =>
         lines.map(line =>
             line.chunk(3).map(columns =>
@@ -24,8 +24,12 @@ export function formatSudoku(sudoku: any[][]): string {
     return output;
 }
 
-export function readSudoku(text: string) {
+export function parseSudoku(text: string) {
+    return text.split('\n').map(line => line.split('').map(v => parseInt(v)));
+}
+
+export function parseAllSudokus(text: string) {
     return text.split('\n').chunk(10).map(lines =>{
-        return lines.slice(1).map(line => line.split('').map(v => parseInt(v)));
+        return parseSudoku(lines.slice(1).join('\n'));
     })
 }

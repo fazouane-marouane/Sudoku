@@ -1,3 +1,5 @@
+import * as Logic from 'logic-solver'
+
 export interface SudokuCell {
     lineIdx: number
     columnIdx: number
@@ -29,6 +31,6 @@ export function square(squareIdx: number): SudokuCell[] {
     }))
 }
 
-export function variable(cell: SudokuCell): string {
-    return `V_${cell.lineIdx}_${cell.columnIdx}_${cell.value}`
+export function variable(cell: SudokuCell) {
+    return Logic.variableBits(`V_${cell.lineIdx}_${cell.columnIdx}`, 4)
 }

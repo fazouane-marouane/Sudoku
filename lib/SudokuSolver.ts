@@ -3,44 +3,43 @@ import * as Logic from "logic-solver";
 
 const solver = new Logic.Solver()
 const rangeNine = Array(9).fill(undefined).map((_, v) => v)
+const vars: Logic.Formula[][] = rangeNine.map(i => rangeNine.map(j => variable({
+    lineIdx: i,
+    columnIdx: j
+})))
+const constants = rangeNine.map(value => Logic.constantBits(value + 1))
 
-for (let value = 1; value <= 9; ++value) {
-    for (let i = 0; i < 9; ++i) {
-        let facts1 = line(i).map(cell => variable({ ...cell, value }))
-        let facts2 = column(i).map(cell => variable({ ...cell, value }))
-        let facts3 = square(i).map(cell => variable({ ...cell, value }))
-        solver.require(Logic.exactlyOne(facts1))
-        solver.require(Logic.exactlyOne(facts2))
-        solver.require(Logic.exactlyOne(facts3))
+for(let lineIdx1 = 0; lineIdx1 < 9; ++lineIdx1)
+for(let lineIdx2 = 0; lineIdx2 < 9; ++lineIdx2)
+for(let columnIdx1 = 0; columnIdx1 < 9; ++columnIdx1)
+for(let columnIdx2 = 0; columnIdx2 < 9; ++columnIdx2) {
+    const sameLine = lineIdx1 == lineIdx2
+    const sameColumn = columnIdx1 == columnIdx2
+    const sameSquare = Math.floor(lineIdx1/3) == Math.floor(lineIdx2/3) && Math.floor(columnIdx1/3) == Math.floor(columnIdx2/3)
+    const different = columnIdx2 > columnIdx1 || lineIdx2 > lineIdx1
+    if(different && (sameLine || sameColumn || sameSquare)) {
+        solver.forbid(Logic.equalBits(vars[lineIdx1][columnIdx1], vars[lineIdx2][columnIdx2]))
     }
 }
 for (let i = 0; i < 81; ++i) {
-    let facts = rangeNine.map(v => variable(sudokuCell(i, v + 1)))
-    solver.require(Logic.exactlyOne(facts))
+    let cell = sudokuCell(i)
+    let variable = vars[cell.lineIdx][cell.columnIdx]
+    solver.require(Logic.lessThanOrEqual(variable, constants[9 - 1]))
+    solver.require(Logic.greaterThanOrEqual(variable, constants[1 - 1]))
 }
 
 export function solveSudoku(sudoku: number[][]): number[][] {
-    const facts: string[] = [];
+    const facts: Logic.Formula[] = [];
     for (let idx = 0; idx < 81; ++idx) {
         let cell = sudokuCell(idx)
         let value = sudoku[cell.lineIdx][cell.columnIdx]
-        if (value >= 0) {
-            facts.push(variable({ ...cell, value }))
+        if (value >= 1) {
+            facts.push(Logic.equalBits(vars[cell.lineIdx][cell.columnIdx], constants[value - 1]))
         }
     }
     return Logic.disablingAssertions(function () {
-        let solution: SudokuCell[] = solver.solveAssuming(Logic.and(facts)).getTrueVars().map((deductedVariable: string) => {
-            let matchs = deductedVariable.match(/^V_(\d+)_(\d+)_(\d+)$/)!;
-            return <SudokuCell>{
-                lineIdx: Number(matchs[1]),
-                columnIdx: Number(matchs[2]),
-                value: Number(matchs[3])
-            }
-        })
-        let formattedSolution = rangeNine.map(_ => rangeNine.map(_ => 0))
-        for (let cell of solution) {
-            formattedSolution[cell.lineIdx][cell.columnIdx] = cell.value!
-        }
-        return formattedSolution
+        let sol = solver.solveAssuming(Logic.and(facts))
+        let solution = vars.map(line => line.map(variable => sol.evaluate(variable)))
+        return solution
     })
 }

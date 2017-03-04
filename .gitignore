@@ -1,5 +1,9 @@
 dist/
 .vscode/
+*.js
+*.map
+*.d.ts
+!typyings/
 
 # Logs
 logs
